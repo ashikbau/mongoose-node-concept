@@ -6,7 +6,9 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
+const productRoute = require('./routes/product.route')
 
+app.use('/api/v1/product',productRoute)
 
 app.get("/", (req, res) => {
   res.send("Route is working! YaY!");

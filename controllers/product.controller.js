@@ -2,6 +2,7 @@ const Product = require("../models/Product");
 const { getProductServices, createProductService, updateProductService, bulkUpdateProductService, deleteProductByIdService, bulkDeleteProductService } = require("../services/product.services")
 
 // http://localhost:5000/api/v1/product?sort=quantity,-price&fields=name,description,-_id
+// http://localhost:5000/api/v1/product?price[gt]=100
 exports.getProducts = async (req, res, next) => {
   try {
     // console.log(req.query)
@@ -27,6 +28,22 @@ exports.getProducts = async (req, res, next) => {
       queries.fields = fields;
       console.log(fields)
     }
+    if (req.query.page) {
+      
+      const {page=1,limit=10}= req.query;
+      const skip = (page - 1)*parseInt(limit);
+      queries.skip=skip;
+      queries.limit= parseInt(limit)
+
+      // 50 products
+      // page 1 = 1-10
+      // page 2 = 11-20
+      // page 3 = 21-30    ---->page 3----->skip 1-20 
+      // page 4 = 31-30     ---->page 4----->skip 1-30 
+      // page 5 = 41-50
+
+      
+        }
 
     const products = await getProductServices(filters, queries);
     // const products = await Product.find({_id:"640d0fc24c601507582fd804",name:"chal"});
@@ -44,6 +61,7 @@ exports.getProducts = async (req, res, next) => {
     // const products = await Product.where('name').equals('chal').where('quantity').gt(100);
     // const products = await Product.where('name').equals(/\w/).where('quantity').gt(100).limit(2);
     //   const product = await Product.findById("640d0fc24c601507582fd804");
+    console.log(products)
     res.status(200).json({
       status: "success",
       data: products

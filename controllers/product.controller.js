@@ -11,6 +11,7 @@ exports.getProducts = async (req, res, next) => {
     excludeFields.forEach(field => delete filters[field]);
     // console.log('original object', req.query)
     // console.log('queryObject', queryObject)
+    
     let filterString = JSON.stringify(filters);
    filterString =filterString.replace(/\b(gt|gte|lt|lte)\b/g,match=>`$${match}`)
    
@@ -21,12 +22,12 @@ exports.getProducts = async (req, res, next) => {
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' ');
       queries.sortBy = sortBy;
-      console.log(sortBy)
+      // console.log(sortBy)
     }
     if (req.query.fields) {
       const fields = req.query.fields.split(',').join(' ');
       queries.fields = fields;
-      console.log(fields)
+      // console.log(fields)
     }
     if (req.query.page) {
       

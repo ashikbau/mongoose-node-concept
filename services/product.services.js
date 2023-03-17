@@ -39,7 +39,7 @@ exports.bulkUpdateProductService= async(data)=>{
 
     })
 
-    const result = Promise.all(products)
+    const result = await Promise.all(products)
     return result
 
 }
